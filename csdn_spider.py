@@ -31,8 +31,12 @@ def get_links(url):
     soup = BeautifulSoup(get_info(url),'html.parser')
     hrefs =[]
     for h in soup.find('ul',{'class':'blog-units blog-units-box'}).findAll('a'):
-        href =host + h.get('href')
-        hrefs.append(href)
+        href = h.a.get('href')
+        if href[:3] != "http":
+            url = host + href
+        else:
+            url = href
+        hrefs.append(url)
     return hrefs
 
 
