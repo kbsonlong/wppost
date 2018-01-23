@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>数字货币行情预览</title>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js"></script>
+    <!--<script src="/static/js/jquery.js"></script>-->
+    <script src="show_btc.js"></script>
     <script>
     $(document).ready(function(){
         //点击查询按钮时触发
@@ -11,34 +13,7 @@
             var in_value = $("#test_input").val();
             $.getJSON("https://block.cc/api/v1/coin/list?size="+in_value +"/",function(data,status){
                 $("tbody").remove();  //移除
-                var packJson = data;
-                var lists = packJson.data.list;
-                for(var i = 0,j=1; i <= lists.length; i++,j++){
-                    //将数据追加到id为hq的p标签
-                    if (lists[i].zhName==""){
-                        $("table").append("<tbody id='btc'><tr>" +
-                       "<td>" + j +"</td>" +
-                       "<td>" + lists[i].symbol + "-" + lists[i].name + "</td>" +
-                       "<td>" + lists[i].price +"</td>" +
-                       "<td>" + lists[i].change1h +"</td>" +
-                       "<td>" + lists[i].change1d +"</td>" +
-                       "<td>" + lists[i].volume_ex +"</td>" +
-                       "<td>" + lists[i].marketCap +"</td>" +
-                       "<td>" + lists[i].change7d +"</td>" +
-                       "</tr></tbody>");}
-                    else {
-                       $("table").append("<tbody id='btc'><tr>" +
-                           "<td>" + j +"</td>" +
-                           "<td>" + lists[i].symbol + "-" + lists[i].zhName + "</td>" +
-                           "<td>" + lists[i].price +"</td>" +
-                           "<td>" + lists[i].change1h +"</td>" +
-                           "<td>" + lists[i].change1d +"</td>" +
-                           "<td>" + lists[i].volume_ex +"</td>" +
-                           "<td>" + lists[i].marketCap +"</td>" +
-                           "<td>" + lists[i].change7d +"</td>" +
-                           "</tr></tbody>");}
-                }
-
+                show_btc(data)
             });
         });
     });
@@ -46,44 +21,25 @@
     //页面加载时默认加载排名前十的数字货币
     $(document).ready(function(){
         $.getJSON("https://block.cc/api/v1/coin/list?size=10",function(data,status){
-            var packJson = data;
-            var lists = packJson.data.list;
-            for(var i = 0,j=1; i <= lists.length; i++,j++){
-                //将数据追加到id为hq的p标签
-                if (lists[i].zhName==""){
-                    $("table").append("<tbody id='btc'><tr>" +
-                   "<td>" + j +"</td>" +
-                   "<td>" + lists[i].symbol + "-" + lists[i].name + "</td>" +
-                   "<td>" + lists[i].price +"</td>" +
-                   "<td>" + lists[i].change1h +"</td>" +
-                   "<td>" + lists[i].change1d +"</td>" +
-                   "<td>" + lists[i].volume_ex +"</td>" +
-                   "<td>" + lists[i].marketCap +"</td>" +
-                   "<td>" + lists[i].change7d +"</td>" +
-                   "</tr></tbody>");}
-                else {
-                   $("table").append("<tbody id='btc'><tr>" +
-                       "<td>" + j +"</td>" +
-                       "<td>" + lists[i].symbol + "-" + lists[i].zhName + "</td>" +
-                       "<td>" + lists[i].price +"</td>" +
-                       "<td>" + lists[i].change1h +"</td>" +
-                       "<td>" + lists[i].change1d +"</td>" +
-                       "<td>" + lists[i].volume_ex +"</td>" +
-                       "<td>" + lists[i].marketCap +"</td>" +
-                       "<td>" + lists[i].change7d +"</td>" +
-                       "</tr></tbody>");}
-            }
-
+            show_btc(data)
         });
     });
     </script>
 
 
-<!--//监测input输入值变化触发事件-->
+<!--{#    监测input输入值变化触发事件#}-->
     <script>
-        $("#test_input").bind("input propertychange",function(event){
-            $("#input_test2").val($("#test_input").val());
+        $(function () {
+            $("#input_test2").bind("propertychange input",function(event){
+            $(document).ready(function(){
+                $.getJSON("https://block.cc/api/v1/coin/list?str="+$("#input_test2").val(),function(data,status){
+                    $("tbody").remove();  //移除
+                    show_btc(data)
+                });
+            });
         });
+        });
+
     </script>
 
 </head>
@@ -91,7 +47,7 @@
 
 <input id="test_input" placeholder="请输入想要查询市值排名前几名">
 <button id="search">查询</button>
-<input id="input_test2">
+<input id="input_test2" placeholder="请输入想要查询的数字货币">
 
 <table border="1">
         <thead>
