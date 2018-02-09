@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-
 #!/ust/bin/env python
-##用于csdn新版爬取
+##用于博客园新版爬取
 from bs4 import BeautifulSoup
 from wppost import *
 
@@ -11,18 +11,11 @@ logging.basicConfig(filename='spider.log',level=logging.DEBUG,format='[%(asctime
 
 
 
-host='http://blog.csdn.net'
+host='https://www.cnblogs.com'
 
 import logging
-import urllib2
 import traceback
-import os
-import json
 
-headers = {'Content-Type':'application/json;charset=UTF-8'}
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# logging.basicConfig(filename='monitor.log' % BASE_DIR,level=logging.DEBUG,format='[%(asctime)s -%(name)s - %(levelname)s] %(message)s')
 
 
 
@@ -30,31 +23,29 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 def get_links(url):
     soup = BeautifulSoup(get_info(url),'html.parser')
     hrefs =[]
-    for h in soup.find('ul',{'class':'blog-units blog-units-box'}).findAll('a'):
+    for h in soup.findAll('div',{'class':'entrylistItem'}):
         href = h.a.get('href')
-        if href[:3] != "http":
-            url = host + href
-        else:
-            url = href
+        # if  href[:3] != "http":
+        #     url = host + href
+        # else:
+        url = href
         hrefs.append(url)
-    return hrefs
-
-
+    return hrefs[::-1]
 
 
 def get_context(links,tags='',category=''):
-
     news = []
     for url in links:
         soup = BeautifulSoup(get_info(url), 'html.parser')
-        print
         try:
-            title = soup.find('h1',{'class':'csdn_top'}).get_text()
+            title = soup.find('a',{'class':'postTitle2'}).get_text()
+            # print title
             soup_context = soup.find('div', {
-                'class': 'article_content csdn-tracking-statistics tracking-click'})
+                'class': 'blogpost-body'})
             ###删除script标签，很多时候爬取内容中带有内嵌的广告script
             # [s.extract() for s in soup_context('script')]
             context = "%s \n 本文转载自 <a href='%s'> %s</a> " % (str(soup_context), str(url), str(title))
+            # print context
             image_name = ''
             news.append(Contexts(title, tags, category, context, image_name))
         except Exception as e:
@@ -65,11 +56,12 @@ def get_context(links,tags='',category=''):
 
 if __name__ == '__main__':
     ##批量爬取
-    url='http://blog.csdn.net/yuan_xw/article/category/6255034'
-    # url = get_links(url)
+    url='http://www.cnblogs.com/wangxiaoqiangs/category/973557.html'
+    # print get_info(url)
+    links = get_links(url)
     ##爬取某一文章
-    url =[ 'http://blog.csdn.net/dufufd/article/details/78622073']
-    news = get_context(url,category='Ansible',tags='Ansible')
+    # url =[ 'https://www.cnblogs.com/wangxiaoqiangs/p/6626076.html']
+    news = get_context(links,category='大数据',tags='CDH')
     try:
         for new in news:
             user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': 'kbsonlong@GMAIL.COM'}

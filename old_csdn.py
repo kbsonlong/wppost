@@ -62,14 +62,14 @@ def get_context(links,tags='',category=''):
     return news
 
 if __name__ == '__main__':
-    url = 'http://blog.csdn.net/huwh_/article/category/7158816'
-    links = get_links(url)
-    # links=['http://blog.csdn.net/huwh_/article/details/71308171']
-    news = get_context(links,category='Docker',tags='Kubernetes')
+    # url = 'http://blog.csdn.net/yuan_xw/article/category/6255034'
+    # links = get_links(url)
+    links=['http://blog.csdn.net/yeruby/article/details/49406073']
+    news = get_context(links,category='大数据',tags='hadoop')
     # print get_context(links)
     try:
         for new in news:
-            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'xxx', 'password': 'xxxxx'}
+            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': 'kbsonlong@GMAIL.COM'}
             send_news(user,new)
     except Exception as e:
         print traceback.format_exc()
