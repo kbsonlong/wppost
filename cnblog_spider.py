@@ -64,7 +64,7 @@ if __name__ == '__main__':
     news = get_context(links,category='大数据',tags='CDH')
     try:
         for new in news:
-            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': 'kbsonlong@GMAIL.COM'}
+            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'xxxx', 'password': 'xxxx'}
             send_news(user,new)
     except Exception as e:
         print traceback.format_exc()
