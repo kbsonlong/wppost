@@ -65,14 +65,14 @@ def get_context(links,tags='',category=''):
 
 if __name__ == '__main__':
     ##批量爬取
-    url='http://blog.csdn.net/yuan_xw/article/category/6255034'
-    # url = get_links(url)
+    url='http://blog.csdn.net/jmilk/article/category/6518106/2'
+    url = get_links(url)
     ##爬取某一文章
-    url =[ 'http://blog.csdn.net/dufufd/article/details/78622073']
-    news = get_context(url,category='Ansible',tags='Ansible')
+    # url =[ 'http://blog.csdn.net/dufufd/article/details/78622073']
+    news = get_context(url,category='Python',tags='Flask')
     try:
         for new in news:
-            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'xxxx', 'password': 'xxxx'}
+            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': '@.COM'}
             send_news(user,new)
     except Exception as e:
         print traceback.format_exc()

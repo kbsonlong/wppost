@@ -22,6 +22,7 @@ import traceback
 
 def get_links(url):
     soup = BeautifulSoup(get_info(url),'html.parser')
+    print url
     hrefs =[]
     for h in soup.find('ul',{'class':'artical-list'}).findAll('a',{'class':'tit'}):
         href = h.get('href')
@@ -38,8 +39,9 @@ def get_links(url):
 def get_context(links,tags='',category=''):
     news = []
     for url in links:
-        soup = BeautifulSoup(get_info(url), 'html.parser')
+        print url
         try:
+            soup = BeautifulSoup(my_spider(url), 'html.parser')
             title = soup.find('h1',{'class':'artical-title'}).get_text()
             # print title
             soup_context = soup.find('div', {
@@ -58,15 +60,15 @@ def get_context(links,tags='',category=''):
 
 if __name__ == '__main__':
     ##批量爬取
-    url='http://blog.51cto.com/lizhenliang/category16.html/p1'
+    url='http://blog.51cto.com/xiaoluoge/category6.html/p1'
     # print get_info(url)
     links = get_links(url)
     ##爬取某一文章
     # url =[ 'https://www.cnblogs.com/wangxiaoqiangs/p/6626076.html']
-    news = get_context(links,category='Python',tags='python基础')
+    news = get_context(links,category='Zabbix',tags='zabbix')
     try:
         for new in news:
-            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'xxx', 'password': 'xxxx'}
-            send_news(user,new)
+            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': 'xxx@xxx.xxx'}
+            # send_news(user,new)
     except Exception as e:
         print traceback.format_exc()

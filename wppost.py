@@ -87,48 +87,85 @@ def upload_image(image_name,client):
 	return attachment_id
 
 
+def get_proxy():
+    return requests.get("http://172.96.247.193:8080/get/").content
+
+def delete_proxy(proxy):
+    requests.get("http://172.96.247.193:8080/delete/?proxy={}".format(proxy))
+
+
+def my_spider(url):
+    headers = {
+        'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
+    }
+    proxy = get_proxy()
+    print proxy
+    try:
+        response = requests.get(url, proxies={"http": "http://{}".format(proxy)}, headers = headers,timeout = 10)
+        return response.content
+    except:
+        print "error" ,traceback.format_exc()
+        logging.info(url)
+        ##删除代理池中代理
+        delete_proxy(proxy)
 
 def get_info(url):
     ##避免python2.7 ssl不信任https证书验证
     context = ssl._create_unverified_context()
-    req = urllib2.Request(url, headers=headers)
+    postData = {
+        'origURL': 'http://www.nmtui.com',
+        'domain': 'nmtui.com',
+    }
+    req = urllib2.Request(url,headers=headers)
     response = None
+    # retry_count = 5
+    # proxy = get_proxy()
+    # print proxy
+
     try:
+        ###添加代理访问
+        # proxies = {"http": "http://{}".format(proxy)}
+        # proxy_s = urllib2.ProxyHandler(proxies)
+        # opener = urllib2.build_opener(proxy_s)
+        # urllib2.install_opener(opener)
         response = urllib2.urlopen(req, timeout=5,context=context)
         contexts = response.read()
         return contexts
 
     except urllib2.URLError as e:
-        print e
         logging.error(e)
+        print traceback.format_exc()
         if hasattr(e, 'code'):
             print 'Error code:', e.code
-            # print e.read()
-            print e.geturl()
-            print e.info()
             return {'code':e.code}
         elif hasattr(e, 'reason'):
             print 'Reason:', e.reason
-    except :
-        print traceback.format_exc()
+
     finally:
         if response:
             response.close()
+    # ##出错5次, 删除代理池中代理
+    # delete_proxy(proxy)
 
 
 def send_news(user,news):
-	wp=Client(user['website'],user['username'],user['password'])
-	post=WordPressPost()
-	if news.image_name!='':
-		attachment_id=upload_image(news.image_name,wp)
-		post.thumbnail = attachment_id
-	post.title=news.title
-	post.content=str(news.content)
-	post.post_status ='publish'
-	post.terms_names={
-		'post_tag':news.tags,
-		'category':[news.category]
-	}
-	wp.call(NewPost(post))
+    wp=Client(user['website'],user['username'],user['password'])
+    post=WordPressPost()
+    if news.image_name!='':
+        print news.image_name
+        for image in news.image_name:
+            print image
+            attachment_id=upload_image(image,wp)
+            post.thumbnail = attachment_id
+    post.title=news.title
+    post.content=str(news.content)
+    post.post_status ='publish'
+    post.terms_names={
+        'post_tag':news.tags,
+        'category':[news.category]
+    }
+    wp.call(NewPost(post))
 
 
+if __name__ == '__main__':
+    print get_info("http://ip.catr.cn/")

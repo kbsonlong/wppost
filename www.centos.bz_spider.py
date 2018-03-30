@@ -42,7 +42,9 @@ def get_context(links,tags='',category=''):
         try:
             title = soup.find('header',{'class':'article-header'}).h1.get_text()
             # print title
+
             soup_context = soup.find('article',{'class':'article-content'})
+
             ###删除script标签，很多时候爬取内容中带有内嵌的广告script
             [s.extract() for s in soup_context('div',{'class':'content-index'})]
             [s.extract() for s in soup_context('blockquote')]
@@ -60,15 +62,15 @@ if __name__ == '__main__':
     ##批量爬取
 
     # print get_info(url)
-    for page in range(7,0,-1):
-        url = 'https://www.centos.bz/tag/kubernetes/page/%s/' % page
-        links = get_links(url)
-    ##爬取某一文章
-    # url =[ 'https://www.cnblogs.com/wangxiaoqiangs/p/6626076.html']
+    # for page in range(7,0,-1):
+    #     url = 'https://www.centos.bz/tag/kubernetes/page/%s/' % page
+    #     links = get_links(url)
+    # ##爬取某一文章
+        links =[ 'https://www.centos.bz/2017/10/%E4%BD%BF%E7%94%A8docker%E5%92%8Ckubernetes%E6%9E%84%E5%BB%BA%E5%8F%AF%E4%BC%B8%E7%BC%A9%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/']
         news = get_context(links,category='Kubernetes',tags='Kubernetes')
-        try:
-            for new in news:
-                user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'xxx', 'password': 'xxxxx'}
-                send_news(user,new)
-        except Exception as e:
-            print traceback.format_exc()
+        # try:
+        #     for new in news:
+        #         user = {'website': 'http://www.along.party/xmlrpc.php', 'username': '', 'password': '@GMAIL.COM'}
+        #         send_news(user,new)
+        # except Exception as e:
+        #     print traceback.format_exc()

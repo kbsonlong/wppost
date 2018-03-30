@@ -34,17 +34,20 @@ def get_links(url):
     hrefs =[]
     for h in soup.findAll('span', {'class': 'link_title'}):
         href = h.a.get('href')
-        if href[:3] != "http":
+        print href
+        print href[:4]
+        if href[:4] != "http":
             url =host + href
         else:
             url = href
         hrefs.append(url)
-    return hrefs
+    return hrefs[::-1]
 
 
 def get_context(links,tags='',category=''):
     news = []
     for url in links:
+        print url
         soup = BeautifulSoup(get_info(url), 'html.parser')
         try:
             title = soup.find('span',{'class':'link_title'}).a.get_text()
@@ -62,14 +65,14 @@ def get_context(links,tags='',category=''):
     return news
 
 if __name__ == '__main__':
-    # url = 'http://blog.csdn.net/yuan_xw/article/category/6255034'
-    # links = get_links(url)
-    links=['http://blog.csdn.net/yeruby/article/details/49406073']
-    news = get_context(links,category='大数据',tags='hadoop')
+    url = 'http://blog.csdn.net/jmilk/article/category/6518106/1'
+    links = get_links(url)
+    # links=['http://blog.csdn.net/yeruby/article/details/49406073']
+    news = get_context(links,category='Flask',tags='Flask')
     # print get_context(links)
     try:
         for new in news:
-            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'xxxxx', 'password': 'xxxxx'}
+            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': '', 'password': '@.COM'}
             send_news(user,new)
     except Exception as e:
         print traceback.format_exc()
