@@ -63,6 +63,10 @@ def load_user_agent():
 def get_image(image_url,image_name):
     # os.makedirs('images',exist_ok=True)mport
     save_path = 'images/'+image_name
+    import json
+    print json.dumps(image_url)
+    print image_url.decode('utf-8')
+    image_url= urllib.unquote(urllib.quote(image_url))
     pic_file = urllib.urlopen(image_url).read()
     f = open(save_path, "wb")
     f.write(pic_file)
@@ -152,9 +156,8 @@ def send_news(user,news):
     wp=Client(user['website'],user['username'],user['password'])
     post=WordPressPost()
     if news.image_name!='':
-        print news.image_name
+        print news.title
         for image in news.image_name:
-            print image
             attachment_id=upload_image(image,wp)
             post.thumbnail = attachment_id
     post.title=news.title

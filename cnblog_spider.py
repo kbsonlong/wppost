@@ -42,18 +42,18 @@ def get_context(links,tags='',category=''):
             # print context
             images_name =[]
             # 查找图片
-            a_tag = soup.findAll('img')
-            for tag in a_tag:
-                if tag != None and tag.attrs['src'] != '':
-                    image_url = tag.attrs['src']
-                    image_name = os.path.basename(image_url).split('!')[0]
-                    # 下载图片
-                    get_image(image_url, image_name)
-                    # 删除标签
-                    tag.extract()
-                    images_name.append(image_name)
-                else:
-                    images_name =[]
+            # a_tag = soup.findAll('img')
+            # for tag in a_tag:
+            #     if tag != None and tag.attrs['src'] != '':
+            #         image_url = tag.attrs['src']
+            #         image_name = os.path.basename(image_url).split('!')[0]
+            #         # 下载图片
+            #         get_image(image_url, image_name)
+            #         # 删除标签
+            #         tag.extract()
+            #         images_name.append(image_name)
+            #     else:
+            #         images_name =[]
             context = "%s \n 本文转载自 <a href='%s'> %s</a> " % (str(soup_context), str(url), str(title))
             news.append(Contexts(title, tags, category, context, images_name))
         except Exception as e:
@@ -92,12 +92,12 @@ if __name__ == '__main__':
     # print get_info(url)
     # links = get_links(url)
     ##爬取某一文章
-    # links =[ 'http://www.cnblogs.com/clsn/p/8022625.html']
-    _get_new_data('http://www.cnblogs.com/clsn/p/8022625.html')
-    # news = get_context(links,category='Mysql',tags='Mysql')
-    # try:
-    #     for new in news:
-    #         user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': '@.COM'}
-    #         # send_news(user,new)
-    # except Exception as e:
-    #     print traceback.format_exc()
+    links =[ 'http://www.cnblogs.com/meishandehaizi/p/5863241.html']
+    # _get_new_data('http://www.cnblogs.com/clsn/p/8022625.html')
+    news = get_context(links,category='Mysql',tags='Mysql')
+    try:
+        for new in news:
+            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': 'kbsonlong@GMAIL.COM'}
+            send_news(user,new)
+    except Exception as e:
+        print traceback.format_exc()
