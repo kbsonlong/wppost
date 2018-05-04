@@ -8,7 +8,7 @@ import traceback
 
 headers = {'Content-Type':'application/json;charset=UTF-8'}
 
-logging.basicConfig(filename='logs/monitor.log',level=logging.DEBUG,format='[%(asctime)s -%(name)s - %(levelname)s] %(message)s')
+logging.basicConfig(filename='monitor.log',level=logging.DEBUG,format='[%(asctime)s -%(name)s - %(levelname)s] %(message)s')
 
 
 

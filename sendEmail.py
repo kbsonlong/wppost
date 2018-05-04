@@ -10,13 +10,12 @@ from email import encoders
 import traceback
 
 
-def sendmail(Smtp_Server,Smtp_user,Smtp_password,Subject,TO=[],files=[]):
+def sendmail(Smtp_Server,Smtp_user,Smtp_password,Subject,TO=[],files=[],context=''):
     # 实例
     msg = MIMEMultipart('alternative')
     msg['To'] = ';'.join(TO)
     msg['From'] = Smtp_user
     msg['Subject'] = Subject
-
     html = """\
     <html>
     <head><title>数字货币市值前一百名行情预览</title></head>
@@ -26,6 +25,9 @@ def sendmail(Smtp_Server,Smtp_user,Smtp_password,Subject,TO=[],files=[]):
     </p>
     </body>
     </html>"""
+
+    if context:
+        html = context
     content = MIMEText(html, 'html', 'utf-8')
     msg.attach(content)
 
@@ -38,12 +40,22 @@ def sendmail(Smtp_Server,Smtp_user,Smtp_password,Subject,TO=[],files=[]):
         msg.attach(part)
 
     try:
-        server = smtplib.SMTP_SSL(Smtp_Server, 465)
+        server = smtplib.SMTP_SSL(Smtp_Server, 465, timeout=120)
         server.login(Smtp_user, Smtp_password)
         server.sendmail(Smtp_user, TO, msg.as_string())
         server.quit()
         message = 'Sendmail Success'
     except Exception, e:
         print str(e)
+        print traceback.format_exc()
         message = traceback.format_exc()
     return message
+
+if __name__ == '__main__':
+    smtp_server = 'smtp.qq.com'
+    smtp_user = 'kbsonlong@qq.com'
+    smtp_pass = 'puvvwmufacopbbcg'
+    subject = '数字货币24小时交易量前50预览'
+    sendto = 'kbsonlong@qq.com'
+    context= 'test'
+    sendmail(smtp_server, smtp_user, smtp_pass, subject, sendto, context=context)

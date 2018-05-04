@@ -54,7 +54,7 @@ def get_context(links,tags='',category=''):
             #         images_name.append(image_name)
             #     else:
             #         images_name =[]
-            context = "%s \n 本文转载自 <a href='%s'> %s</a> " % (str(soup_context), str(url), str(title))
+            context = "%s \n 本文转载自 <a href='%s' target='_blank'> %s</a> " % (str(soup_context), str(url), str(title))
             news.append(Contexts(title, tags, category, context, images_name))
         except Exception as e:
             logging.error(traceback.format_exc())
@@ -92,12 +92,12 @@ if __name__ == '__main__':
     # print get_info(url)
     # links = get_links(url)
     ##爬取某一文章
-    links =[ 'http://www.cnblogs.com/meishandehaizi/p/5863241.html']
+    links =[ 'https://www.cnblogs.com/huangpeng1990/p/4364341.html','https://www.cnblogs.com/kaynet/p/5861926.html']
     # _get_new_data('http://www.cnblogs.com/clsn/p/8022625.html')
-    news = get_context(links,category='Mysql',tags='Mysql')
+    news = get_context(links,category='ELK',tags=u'elasticsearch,性能调优')
     try:
         for new in news:
-            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': 'kbsonlong@GMAIL.COM'}
+            user = {'website': 'https://www.along.party/xmlrpc.php', 'username': '', 'password': '.COM'}
             send_news(user,new)
     except Exception as e:
         print traceback.format_exc()
