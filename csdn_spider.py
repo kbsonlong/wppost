@@ -49,9 +49,9 @@ def get_context(links,tags='',category=''):
         soup = BeautifulSoup(get_info(url), 'html.parser')
         print
         try:
-            title = soup.find('h1',{'class':'csdn_top'}).get_text()
+            title = soup.find('h6',{'class':'title-article'}).get_text()
             soup_context = soup.find('div', {
-                'class': 'article_content csdn-tracking-statistics tracking-click'})
+                'class': 'article_content csdn-tracking-statistics'})
             ###删除script标签，很多时候爬取内容中带有内嵌的广告script
             # [s.extract() for s in soup_context('script')]
             context = "%s \n 本文转载自 <a href='%s'> %s</a> " % (str(soup_context), str(url), str(title))
@@ -65,14 +65,14 @@ def get_context(links,tags='',category=''):
 
 if __name__ == '__main__':
     ##批量爬取
-    url='http://blog.csdn.net/jmilk/article/category/6518106/2'
-    url = get_links(url)
+    # url='http://blog.csdn.net/jmilk/article/category/6518106/2'
+    # url = get_links(url)
     ##爬取某一文章
-    # url =[ 'http://blog.csdn.net/dufufd/article/details/78622073']
-    news = get_context(url,category='Python',tags='Flask')
+    url =[ 'https://blog.csdn.net/sdulsj/article/details/52984874']
+    news = get_context(url,category='Python',tags='Scrapy,模拟登陆')
     try:
         for new in news:
-            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': '@.COM'}
+            user = {'website': 'https://www.along.party/xmlrpc.php', 'username': 'admin', 'password': '@GMAIL.COM'}
             send_news(user,new)
     except Exception as e:
         print traceback.format_exc()
