@@ -74,7 +74,7 @@ if __name__ == '__main__':
     # print get_context(links)
     try:
         for new in news:
-            user = {'website': 'https://www.along.party/xmlrpc.php', 'username': 'admin', 'password': 'kbsonlong@GMAIL.COM'}
+            user = {'website': 'https://www.along.party/xmlrpc.php', 'username': '', 'password': '@GMAIL.COM'}
             # send_news(user,new)
     except Exception as e:
         print traceback.format_exc()
