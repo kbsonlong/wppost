@@ -1,0 +1,12 @@
+{% extends "base.html" %}  
+{% import "bootstrap/wtf.html" as wtf %}  
+  
+{% block title %}Flasky{% endblock %}  
+  
+{% block page_content %}  
+<div class="page-header">  
+    <h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}!</h1>  
+</div>  
+<!-- 导入wtf.html渲染整个Flsk-WTF表单，参数form是hello.py中传过来的form实例-->  
+{{ wtf.quick_form(form) }}  
+{% endblock %}  

@@ -1,0 +1,17 @@
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css">
+</head>
+
+<body>
+{% import 'bootstrap/wtf.html' as wtf %}
+<div align="center" >
+<form class="form" method="POST">
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.email) }}
+    {{ wtf.form_field(form.password) }}
+    {{ wtf.form_field(form.submit) }}
+</form>
+</div>
+</body>

@@ -47,9 +47,8 @@ def get_context(links,tags='',category=''):
     news = []
     for url in links:
         soup = BeautifulSoup(get_info(url), 'html.parser')
-        print
         try:
-            title = soup.find('h1',{'class':'csdn_top'}).get_text()
+            title = soup.find('h6',{'class':'title-article'}).get_text()
             soup_context = soup.find('div', {
                 'class': 'article_content csdn-tracking-statistics tracking-click'})
             ###删除script标签，很多时候爬取内容中带有内嵌的广告script
@@ -65,14 +64,14 @@ def get_context(links,tags='',category=''):
 
 if __name__ == '__main__':
     ##批量爬取
-    url='http://blog.csdn.net/jmilk/article/category/6518106/2'
-    url = get_links(url)
-    ##爬取某一文章
-    # url =[ 'http://blog.csdn.net/dufufd/article/details/78622073']
+    # url='http://blog.csdn.net/jmilk/article/category/6518106/2'
+    # url = get_links(url)
+    # ##爬取某一文章
+    url =[ 'https://blog.csdn.net/jmilk/article/details/53981100']
     news = get_context(url,category='Python',tags='Flask')
     try:
         for new in news:
-            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': '@.COM'}
+            user = {'website': 'http://www.along.party/xmlrpc.php', 'username': 'admin', 'password': 'kbsonlong@GMAIL@.COM'}
             send_news(user,new)
     except Exception as e:
         print traceback.format_exc()
