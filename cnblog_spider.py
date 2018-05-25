@@ -34,7 +34,7 @@ def get_context(links,tags='',category=''):
     for url in links:
         soup = BeautifulSoup(get_info(url), 'html5lib', from_encoding='utf-8')
         try:
-            title = soup.find('a',{'class':'postTitle2'}).get_text()
+            title = soup.find('div',{'class':'post'}).h1.a.get_text()
             soup_context = soup.find('div', {
                 'class': 'blogpost-body'})
             ###删除script标签，很多时候爬取内容中带有内嵌的广告script
@@ -92,12 +92,12 @@ if __name__ == '__main__':
     # print get_info(url)
     # links = get_links(url)
     ##爬取某一文章
-    links =[ 'https://www.cnblogs.com/huangpeng1990/p/4364341.html','https://www.cnblogs.com/kaynet/p/5861926.html']
+    links =[ 'https://www.cnblogs.com/qmfsun/p/6207918.html']
     # _get_new_data('http://www.cnblogs.com/clsn/p/8022625.html')
-    news = get_context(links,category='ELK',tags=u'elasticsearch,性能调优')
+    news = get_context(links,category='Python',tags=u'SCRAPY,爬虫')
     try:
         for new in news:
-            user = {'website': 'https://www.along.party/xmlrpc.php', 'username': '', 'password': '.COM'}
+            user = {'website': 'https://www.along.party/xmlrpc.php', 'username': 'admin', 'password': '@GMAIL.COM'}
             send_news(user,new)
     except Exception as e:
         print traceback.format_exc()
